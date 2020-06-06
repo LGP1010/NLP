@@ -295,7 +295,7 @@ def beam_decode(model, batch, vocab, params):
     hyps_sorted = sorted(results, key=lambda h: h.avg_log_prob, reverse=True)
     best_hyp = hyps_sorted[0]
     # print('best_hyp.tokens is ', best_hyp.tokens)
-    best_hyp.abstract = " ".join(output_to_words(best_hyp.tokens, vocab, batch[0]["article_oovs"][0])[1:-1])
-    best_hyp.text = batch[0]["article"].numpy()[0].decode()
+    best_hyp.abstract = " ".join([vocab.id_to_word(index) for index in best_hyp.tokens])
+    # best_hyp.text = batch[0]["article"].numpy()[0].decode()
     print('best_hyp is ', best_hyp.abstract)
     return best_hyp
