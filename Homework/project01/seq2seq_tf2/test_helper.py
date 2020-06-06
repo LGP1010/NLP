@@ -92,7 +92,7 @@ class Hypothesis:
         # self.text = ""
         # self.real_abstract = ""
 
-    def extend(self, token, log_prob, state, attn_dist, p_gen):
+    def extend(self, token, log_prob, state, attn_dist):
         """Method to extend the current hypothesis by adding the next decoded token and all
         the informations associated with it"""
         return Hypothesis(tokens=self.tokens + [token],  # we add the decoded token
@@ -246,7 +246,7 @@ def beam_decode(model, batch, vocab, params):
         # print('num_orig_hyps is ', num_orig_hyps)
         for i in range(num_orig_hyps):
             # h, new_state, attn_dist, p_gen, coverage = hyps[i], new_states[i], attn_dists[i], p_gens[i], prev_coverages[i]
-            h, new_state, attn_dist, p_gen = hyps[i], new_states[i], attn_dists[i], p_gens[i]
+            h, new_state, attn_dist = hyps[i], new_states[i], attn_dists[i]
             # print('h is ', h)
             # print('new_state is ', new_state) shape=(256,)
             # print('attn_dist ids ', attn_dist) shape=(115,)
@@ -269,7 +269,6 @@ def beam_decode(model, batch, vocab, params):
                                    log_prob=topk_log_probs[i, j],
                                    state=new_state,
                                    attn_dist=attn_dist,
-                                   p_gen=p_gen,
                                    )
                 all_hyps.append(new_hyp)
         # in the following lines, we sort all the hypothesises, and select only the beam_size most likely hypothesises
